@@ -12,6 +12,8 @@ app.set('views', './view-html')
 
 app.get('/', c_beranda.index)
 app.get('/login', c_auth.form_login)
+app.post('/login', c_auth.proses_login)
+
 
 
 app.listen(port, () => {
