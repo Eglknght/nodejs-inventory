@@ -1,7 +1,7 @@
 module.exports = {
     index: (req, res) => {
         let dataview = {
-            konten: 'dashboard/index'
+            konten: 'master-product/index'
         }
         res.render('template/struktur', dataview)
     }
