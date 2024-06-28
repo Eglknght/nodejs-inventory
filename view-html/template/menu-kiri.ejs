@@ -9,13 +9,13 @@
         <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto" style="height: 100vh;">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/dashboard">
+                    <a class="nav-link d-flex align-items-center gap-2  <%= (uri_segment[1] == 'dashboard') ? 'bg-primary text-white' : '' %>" href="/dashboard">
                         <i class="fa-solid fa-house-user"></i>
                         Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2" href="/master-product">
+                    <a class="nav-link d-flex align-items-center gap-2 <%= (uri_segment[1] == 'master-product') ? 'bg-primary text-white' : '' %>" href="/master-product">
                         <i class="fa-solid fa-bars-progress"></i>
                         Master Product
                     </a>
@@ -24,7 +24,7 @@
             <hr class="my-3">
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2" href="/user-management">
+                    <a class="nav-link d-flex align-items-center gap-2 <%= (uri_segment[1] == 'user-management') ? 'bg-primary text-white' : '' %>" href="/user-management">
                         <i class="fa-solid fa-users-gear"></i>
                         User management
                     </a>
