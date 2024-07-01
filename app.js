@@ -37,8 +37,8 @@ app.post('/proses-login', c_auth.proses_login)
 app.get('/dashboard', cek_login, c_dashboard.index)
 app.get('/user-management', cek_login, c_user.index)
 app.get('/master-product', cek_login, c_master_product.index)
-
-
+app.get('/user/tambah', cek_login, c_user.form_tambah)
+app.post('/user/proses-simpan', cek_login, c_user.proses_simpan)
 
 app.listen(port, () => {
     console.log(`aplikasi sudah siap, buka http://localhost:${port}`)

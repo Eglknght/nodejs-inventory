@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 const mysql = require('mysql2')
 const db = mysql.createConnection({
     host: 'localhost',
@@ -23,4 +24,25 @@ module.exports =
             })
         })
     },
+
+    tambah: (req) => {
+        let data = {
+            username : req.body.form_username,
+            password : bcrypt.hashSync(req.body.form_password),
+            nama_lengkap : req.body.nama_lengkap
+        }
+        let sql = mysql.format(
+            `INSERT INTO user SET ?`,
+            [data]
+        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    }
 }
