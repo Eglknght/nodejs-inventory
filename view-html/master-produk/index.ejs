@@ -1,0 +1,23 @@
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Master Product</h1>
+</div>
+<div class="row">
+    <% for (const i in produk) { %>
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%= produk[i].nama %></h5>
+                    <h6 class="badge bg-dark"><%= produk[i].kode %></h6>
+                    <p class="card-text"><%= produk[i].deskripsi %></p>
+                    <a href="#" class="btn btn-sm btn-outline-primary float-end mx-1">
+                        <i class="fa-solid fa-fw fa-edit"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-outline-primary float-end mx-1">
+                        <i class="fa-solid fa-fw fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>

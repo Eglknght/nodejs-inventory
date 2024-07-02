@@ -9,7 +9,7 @@ const c_beranda = require('./controller/c_beranda')
 const c_auth = require('./controller/c_auth')
 const c_dashboard = require('./controller/c_dashboard')
 const c_user = require('./controller/c_user')
-const c_master_product = require('./controller/c_master_product')
+const c_master_produk = require('./controller/c_master_produk')
 const cek_login = c_auth.cek_login
 
 
@@ -36,7 +36,7 @@ app.get('/login', c_auth.form_login)
 app.post('/proses-login', c_auth.proses_login)
 app.get('/dashboard', cek_login, c_dashboard.index)
 app.get('/user-management', cek_login, c_user.index)
-app.get('/master-product', cek_login, c_master_product.index)
+app.get('/master-produk', cek_login, c_master_produk.index)
 app.get('/user/tambah', cek_login, c_user.form_tambah)
 app.post('/user/proses-simpan', cek_login, c_user.proses_simpan)
 
