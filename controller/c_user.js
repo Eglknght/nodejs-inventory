@@ -5,6 +5,7 @@ module.exports = {
     index: async (req, res) => {
         let dataview = {
             konten: 'user-management/index',
+            req: req,
             uri_segment: req.path.split('/'),
             users: await m_user.get_semua_user()
         }
@@ -25,7 +26,7 @@ module.exports = {
             let insert = await m_user.tambah(req)
             let isi_notif = `berhasil membuat user baru`
             if (insert.affectedRows > 0) {
-                res.redirect('/user-management?note=${isi_notif}')
+                res.redirect(`/user-management?note=sukses&pesan=${isi_notif}`)
             }
         } catch (error) {
             let dataview = {
@@ -33,7 +34,6 @@ module.exports = {
                 uri_segment: req.path.split('/'),
                 info_error: error
             }
-            console.log(req.body)
             res.render('template/struktur', dataview)
         }
     },

@@ -2,6 +2,18 @@
 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 <h1 class="h2">User Management</h1>
 </div>
+<% if (req.query.note == 'sukses') { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<% if (req.query.note == 'gagal') { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
 <ul class="list-group">
     <% for (const i in users) { %>
     <li class="list-group-item"><%= users[i].username %> (<%= users[i].nama_lengkap %>)</li>
