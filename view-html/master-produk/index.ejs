@@ -2,6 +2,19 @@
 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 <h1 class="h2">Master Product</h1>
 </div>
+
+<% if (req.query.note == 'sukses') { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+<% if (req.query.note == 'gagal') { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
 <div class="row">
     <% for (const i in produk) { %>
         <div class="col-lg-3">
@@ -21,3 +34,8 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
         </div>
     <% } %>
 </div>
+<br>
+
+<a href="/master-produk/tambah" class="btn btn-outline-primary rounded-circle mb-3">
+    <i class="fa-solid fa-plus"></i> 
+</a>
