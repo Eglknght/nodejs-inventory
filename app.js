@@ -43,7 +43,7 @@ app.post('/master-produk/proses-simpan', cek_login, c_master_produk.proses_simpa
 app.get('/user/tambah', cek_login, c_user.form_tambah)
 app.post('/user/proses-simpan', cek_login, c_user.proses_simpan)
 app.get('/stok-masuk', cek_login, c_stok.form_stok_masuk)
-// app.post('/stok-masuk/proses-simpan', cek_login, c_stok.proses_simpan)
+app.post('/stok-masuk/proses-simpan', cek_login, c_stok.proses_stok_masuk)
 
 
 app.listen(port, () => {
