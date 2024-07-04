@@ -7,7 +7,10 @@ module.exports =
 {
     get_semua_produk: function() {
         let sql = mysql.format(
-            `SELECT * FROM master_produk;`
+            `SELECT master_produk.*, master_kategori.nama AS kategori_nama 
+            FROM master_produk 
+            LEFT JOIN master_kategori 
+            ON master_kategori.id = master_produk.id_kategori;`
         )
 
         return new Promise( (resolve,reject)=>{
