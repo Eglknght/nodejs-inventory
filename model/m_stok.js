@@ -26,11 +26,34 @@ module.exports =
     },
 
     input_stok_masuk : (req, stok_akhir) => {
-        let masuk = req.body.form_jumlah
         let data = {
             kode_produk : req.body.form_produk,
             stok_masuk : req.body.form_jumlah,
             stok_keluar : 0,
+            stok_sisa : stok_akhir,
+            keterangan : req.body.form_keterangan,
+            dibuat_oleh : req.session.user.id,
+            dibuat_kapan : moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        let sql = mysql.format(
+            `INSERT INTO stok SET ?`,
+            [data]
+        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    }, 
+    input_stok_keluar : (req, stok_akhir) => {
+        let data = {
+            kode_produk : req.body.form_produk,
+            stok_masuk : 0,
+            stok_keluar : -req.body.form_jumlah,
             stok_sisa : stok_akhir,
             keterangan : req.body.form_keterangan,
             dibuat_oleh : req.session.user.id,

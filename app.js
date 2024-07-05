@@ -49,7 +49,10 @@ router.post('/master-produk/proses-simpan', c_master_produk.proses_simpan)
 router.get('/user/tambah', c_user.form_tambah)
 router.post('/user/proses-simpan', c_user.proses_simpan)
 router.get('/stok-masuk', c_stok.form_stok_masuk)
+router.get('/stok-keluar', c_stok.form_stok_keluar)
 router.post('/stok-masuk/proses-simpan', c_stok.proses_stok_masuk)
+router.post('/stok-keluar/proses-simpan', c_stok.proses_stok_keluar)
+// router.get('/master-kategori', c_master_kategori.form_master_kategori)
 
 app.use('/', router)
 

@@ -1,0 +1,42 @@
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Form Stok Keluar</h1>
+</div>
+
+
+<%if (info_error) { %>
+    <strong style="color: red;">
+        <%= info_error.errno %> - <%= info_error.code %> <br>
+        <%= info_error.sqlMessage %> <br>
+    </strong>
+    <br>
+<% } %>
+
+<div class="row">
+    <div class="col-md-12 col-lg-6">
+        <form action="/stok-keluar/proses-simpan" method="POST">
+            <div class="mb-3">
+                <label class="form-label">produk</label>
+                <select id="form_produk" name="form_produk" class="form-select" required>
+                    <option value="">--pilih--</option>
+                    <% for (const i in produk) { %>
+                        <option value="<%= produk[i].kode %>"><%= produk[i].nama %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Jumlah Keluar</label>
+                <input type="number" class="form-control" id="form_jumlah" name="form_jumlah" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Keterangan</label>
+                <input type="text" class="form-control" id="form_keterangan" name="form_keterangan" required>
+            </div>
+
+            <button type="submit" class="btn btn-secondary mt-3">
+                <i class="fa-solid fa-save me-1"></i> Simpan
+            </button>
+        </form>
+    </div>
+</div>
