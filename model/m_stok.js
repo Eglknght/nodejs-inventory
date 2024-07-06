@@ -8,11 +8,46 @@ module.exports =
 {
     cek_stok_sisa : (kode_produk) => {
         let sql = mysql.format(
-            `SELECT * FROM stok 
+            `SELECT * FROM history_stok 
             WHERE kode_produk = ?
             ORDER BY id DESC 
             LIMIT 1`,
             [kode_produk]
+        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
+    cek_current_stok : (kode_produk) => {
+        let sql = mysql.format(
+            `SELECT * FROM master_produk 
+            WHERE kode = ?
+            ORDER BY id DESC 
+            LIMIT 1`,
+            [kode_produk]
+        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
+
+    //update main stok
+    update_stok_keluar : (stok_akhir, kode_produk) => {
+        let sql = mysql.format(
+            `UPDATE master_produk SET stok = ? WHERE kode = ?`,
+            [stok_akhir, kode_produk]
         )
         return new Promise((resolve, reject) => {
             db.query(sql, function(errSql, hasil){
@@ -36,7 +71,7 @@ module.exports =
             dibuat_kapan : moment().format('YYYY-MM-DD HH:mm:ss')
         }
         let sql = mysql.format(
-            `INSERT INTO stok SET ?`,
+            `INSERT INTO history_stok SET ?`,
             [data]
         )
         return new Promise((resolve, reject) => {
@@ -60,7 +95,7 @@ module.exports =
             dibuat_kapan : moment().format('YYYY-MM-DD HH:mm:ss')
         }
         let sql = mysql.format(
-            `INSERT INTO stok SET ?`,
+            `INSERT INTO history_stok SET ?`,
             [data]
         )
         return new Promise((resolve, reject) => {
@@ -77,7 +112,7 @@ module.exports =
         let sql = mysql.format(
             `SELECT s.*,
             p.nama, p.deskripsi 
-            FROM stok as s
+            FROM history_stok as s
             LEFT JOIN master_produk as p
             ON p.kode = s.kode_produk
             WHERE kode_produk = ?`,
@@ -89,6 +124,20 @@ module.exports =
             db.query(sql, function(errorSql, hasil){
                 if(errorSql){
                     reject(errorSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
+    get_produk_stok : () => {
+        let sql = mysql.format(
+            `SELECT p.nama, p.stok            
+            FROM master_produk as p`        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
                 } else {
                     resolve(hasil)
                 }

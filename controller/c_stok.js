@@ -3,14 +3,17 @@ const m_stok = require('../model/m_stok')
 
 module.exports = {
     index : async (req, res) => {
+        console.log(req.body)
         let dataview = {
-            konten: 'master-produk/index',
+            konten: 'stok/index',
             uri_segment: req.path.split('/'),
             req: req,
-            produk: await m_produk.get_semua_produk(),
+            produk: await m_stok.get_produk_stok(),
         }
+        // console.log(dataview)
         res.render('template/struktur', dataview)
-    }
+    },
+
     form_stok_masuk: async (req, res) => {
         let dataview = {
             req : req,
@@ -23,24 +26,27 @@ module.exports = {
     },
 
     proses_stok_masuk: async (req, res) => {
+        let kode_produk = req.body.form_produk
+        let jumlah_stok = req.body.form_jumlah
         try {
-            let stok_terakhir = await m_stok.cek_stok_sisa(req.body.form_produk)
+            let stok_terakhir = await m_stok.cek_current_stok(kode_produk)
             let sisa_terakhir = 0
             
             if (stok_terakhir.length > 0) {
-                sisa_terakhir = stok_terakhir[0].stok_sisa
+                sisa_terakhir = stok_terakhir[0].stok
 
             }
 
-            let stok_akhir = sisa_terakhir + Number(req.body.form_jumlah)
-            if (req.body.form_jumlah < 1) {
+            let stok_akhir = sisa_terakhir + Number(jumlah_stok)
+            if (jumlah_stok < 1) {
                 let isi_info = `Jumlah stok yang keluar minimal 1`
-                return res.redirect(`/stok-keluar?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
             }
-            let insert = await m_stok.input_stok_masuk(req, stok_akhir)
+            await m_stok.input_stok_masuk(req, stok_akhir)
+            let insert = await m_stok.update_stok_keluar(stok_akhir, kode_produk)
             let isi_notif = `berhasil menambahkan stok`
             if (insert.affectedRows > 0) {
-                res.redirect(`/stok-masuk?note=sukses&pesan=${isi_notif}`)
+                res.redirect(`/stok?note=sukses&pesan=${isi_notif}`)
             }
 
         } catch (error) {
@@ -65,29 +71,32 @@ module.exports = {
         res.render('template/struktur', dataview)
     },
     proses_stok_keluar: async (req, res) => {
+        let kode_produk = req.body.form_produk
+        let jumlah_stok = req.body.form_jumlah
         try {
-            let stok_terakhir = await m_stok.cek_stok_sisa(req.body.form_produk)
+            let stok_terakhir = await m_stok.cek_current_stok(kode_produk)
             let sisa_terakhir = 0
             
             if (stok_terakhir.length > 0) {
-                sisa_terakhir = stok_terakhir[0].stok_sisa
+                sisa_terakhir = stok_terakhir[0].stok
 
             }
 
-            let stok_akhir = sisa_terakhir - Number(req.body.form_jumlah)
-            if (req.body.form_jumlah > stok_akhir) {
+            let stok_akhir = sisa_terakhir - Number(jumlah_stok)
+            if (jumlah_stok > stok_akhir) {
                 let isi_info = `Jumlah stok yang keluar melebihi stok yang tersedia`
-                return res.redirect(`/stok-keluar?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
             }
-            if (req.body.form_jumlah < 1) {
+            if (jumlah_stok < 1) {
                 let isi_info = `Jumlah stok yang keluar minimal 1`
-                return res.redirect(`/stok-keluar?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
             }
 
-            let insert = await m_stok.input_stok_keluar(req, stok_akhir)
+            await m_stok.input_stok_keluar(req, stok_akhir)
+            let insert = await m_stok.update_stok_keluar(stok_akhir, kode_produk)
             let isi_notif = `berhasil mengeluarkan stok`
             if (insert.affectedRows > 0) {
-                res.redirect(`/stok-keluar?note=sukses&pesan=${isi_notif}`)
+                res.redirect(`/stok?note=sukses&pesan=${isi_notif}`)
             }
 
         } catch (error) {
