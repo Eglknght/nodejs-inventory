@@ -72,5 +72,27 @@ module.exports =
                 }
             })
         })
-    }
+    },
+    getAll_by_produk: (kode_produk) => {
+        let sql = mysql.format(
+            `SELECT s.*,
+            p.nama, p.deskripsi 
+            FROM stok as s
+            LEFT JOIN master_produk as p
+            ON p.kode = s.kode_produk
+            WHERE kode_produk = ?`,
+            [kode_produk]
+            
+        )
+        
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errorSql, hasil){
+                if(errorSql){
+                    reject(errorSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
 }

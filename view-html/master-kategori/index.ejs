@@ -1,0 +1,32 @@
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Master Kategori</h1>
+</div>
+<% if (req.query.note == 'sukses') { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<% if (req.query.note == 'gagal') { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<div class="col-12">
+  <% for (const i in kategori) { %>
+      <div class="col-lg-3">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title"><%= kategori[i].nama %></h5>
+                  <p class="card-text"><%= kategori[i].deskripsi %></p>
+              </div>
+          </div>
+      </div>
+  <% } %>
+</div>
+  <br>
+  <a href="/master-kategori/tambah" class="btn btn-outline-primary rounded-circle mb-4">
+    <i class="fa-solid fa-plus"></i>
+  </a>

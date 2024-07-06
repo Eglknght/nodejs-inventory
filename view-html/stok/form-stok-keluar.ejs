@@ -3,6 +3,26 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
 <h1 class="h2">Form Stok Keluar</h1>
 </div>
 
+<% if (req.query.note == 'sukses') { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+<% if (req.query.note == 'info') { %>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+<% if (req.query.note == 'gagal') { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+
 
 <%if (info_error) { %>
     <strong style="color: red;">

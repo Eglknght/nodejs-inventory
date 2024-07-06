@@ -1,0 +1,72 @@
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Laporan</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Pilih Produk
+            </button>
+            <ul class="dropdown-menu">
+                <% for (const i in produk) { %>
+                <li><a class="dropdown-item" href="/laporan?kodeproduk=<%= produk[i].kode %>"><%= produk[i].nama %></a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<% if (datalaporan.length > 0) { %>
+    <table id="table_laporan_stok" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Kode</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Masuk</th>
+                <th scope="col">Keluar</th>
+                <th scope="col">Sisa</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Jam</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <% for (const i in datalaporan) { %>
+                <% let urut = Number(i) + Number(1) %>
+                <tr>
+                    <th scope="row"><%= urut %></th>
+                    <td><%= datalaporan[i].kode_produk %></td>
+                    <td><%= datalaporan[i].nama %></td>
+                    <td><%= datalaporan[i].stok_masuk %></td>
+                    <td><%= datalaporan[i].stok_keluar %></td>
+                    <td><%= datalaporan[i].stok_sisa %></td>
+                    <td><%= datalaporan[i].keterangan %></td>
+                    <td><%= moment(datalaporan[i].dibuat_kapan).format('dddd, DD MMMM YYYY') %></td>
+                    <td><%= moment(datalaporan[i].dibuat_kapan).format('HH:mm') %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
+<link rel="stylesheet" href="/datatables/css/buttons.dataTables.css">
+<script src="/datatables/js/dataTables.buttons.js"></script>
+<script src="/datatables/js/buttons.dataTables.js"></script>
+<script src="/jszip/jszip.min.js"></script>
+<script src="/pdfmake/pdfmake.min.js"></script>
+<script src="/pdfmake/vfs_fonts.js"></script>
+<script src="/datatables/js/buttons.html5.min.js"></script>
+<script src="/datatables/js/buttons.print.min.js"></script>
+
+<script>
+    new DataTable('#table_laporan_stok', {
+        layout: {
+            topStart: {
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            }
+        }
+    })
+</script>

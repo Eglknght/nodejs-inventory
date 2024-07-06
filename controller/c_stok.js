@@ -2,8 +2,18 @@ const m_produk = require('../model/m_produk')
 const m_stok = require('../model/m_stok')
 
 module.exports = {
+    index : async (req, res) => {
+        let dataview = {
+            konten: 'master-produk/index',
+            uri_segment: req.path.split('/'),
+            req: req,
+            produk: await m_produk.get_semua_produk(),
+        }
+        res.render('template/struktur', dataview)
+    }
     form_stok_masuk: async (req, res) => {
         let dataview = {
+            req : req,
             konten: 'stok/form-stok-masuk',
             uri_segment: req.path.split('/'),
             info_error: null,
@@ -46,6 +56,7 @@ module.exports = {
     },
     form_stok_keluar: async (req, res) => {
         let dataview = {
+            req : req,
             konten: 'stok/form-stok-keluar',
             uri_segment: req.path.split('/'),
             info_error: null,

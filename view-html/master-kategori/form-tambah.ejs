@@ -1,0 +1,31 @@
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Form Input Kategori Baru</h1>
+</div>
+
+<%if (info_error) { %>
+    <strong style="color: red;">
+        <%= info_error.errno %> - <%= info_error.code %> <br>
+        <%= info_error.sqlMessage %> <br>
+    </strong>
+    <br>
+<% } %>
+
+<div class="row">
+    <div class="col-md-12 col-lg-6">
+        <form action="/master-kategori/proses-simpan" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Nama Kategori</label>
+                <input type="text" class="form-control" id="form_kategori" name="form_kategori" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Deskripsi</label>
+                <input type="text" class="form-control" id="form_deskripsi" name="form_deskripsi" required>
+            </div>
+    
+            <button type="submit" class="btn btn-secondary mt-3">
+                <i class="fa-solid fa-save me-1"></i> Simpan
+            </button>
+        </form>
+    </div>
+</div>
