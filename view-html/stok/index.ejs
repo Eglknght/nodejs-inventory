@@ -1,51 +1,63 @@
-<div
-class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-<h1 class="h2">Master Product</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Stok Barang</h1>
 </div>
 
-<% if (req.query.note == 'sukses') { %>
+<% if (req.query.note=='sukses' ) { %>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
+        <strong><i class="fa-solid fa-check-circle me-1"></i>
+            <%= req.query.pesan %>
+        </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<% } %>
+    <% } %>
 
-<% if (req.query.note == 'info') { %>
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <strong><i class="fa-solid fa-check-circle me-1"></i><%= req.query.pesan %></strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<% } %>
-
-<% if (req.query.note == 'gagal') { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<% } %>
-
-<div class="row">
-
-    <% for (const i in produk) { %>
-        <div class="col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><%= produk[i].nama %></h5>
-                    <h6 class="badge bg-primary">Sisa Stok : <%= produk[i].stok %></h6>
-                </div>
+        <% if (req.query.note=='info' ) { %>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong><i class="fa-solid fa-circle-info me-1"></i>
+                    <%= req.query.pesan %>
+                </strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
-        <% } %>
-        <div class="col-md-12">
-        <a href="/stok/stok-masuk">
-        <button class="btn btn-secondary mt-3">
-            <i class="fa-solid fa-plus me-1"></i> Stok Masuk
-        </button>
-        </a> 
-        <a href="/stok/stok-keluar">
-        <button class="btn btn-secondary mt-3"> 
-            <i class="fa-solid fa-minus me-1"></i> Stok Keluar
-        </button>
-        </a>
-        </div>
-</div>
+            <% } %>
+
+                <% if (req.query.note=='gagal' ) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa-solid fa-exclamation-triangle me-1"></i>Gagal, cek terminal</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } %>
+
+                        <div class="row">
+
+                            <% for (const i in produk) { %>
+                                <div class="col-lg-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <%= produk[i].nama %>
+                                            </h5>
+                                            <% if (produk[i].stok> 25) {%>
+                                                <% var color = 'primary'%>
+                                                <% } else { %>
+                                                <% var color = 'danger' %>
+                                                <% } %>
+
+                                                <h6 class="badge bg-<%= color %>">Sisa Stok : <%= produk[i].stok %>
+                                                </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <div class="col-md-12">
+                                        <a href="/stok/stok-masuk">
+                                            <button class="btn btn-secondary mt-3">
+                                                <i class="fa-solid fa-plus me-1"></i> Stok Masuk
+                                            </button>
+                                        </a>
+                                        <a href="/stok/stok-keluar">
+                                            <button class="btn btn-secondary mt-3">
+                                                <i class="fa-solid fa-minus me-1"></i> Stok Keluar
+                                            </button>
+                                        </a>
+                                    </div>
+                        </div>

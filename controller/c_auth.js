@@ -55,4 +55,9 @@ module.exports =
             res.redirect('/login?msg=sesi anda sudah habis')
         }
     },
+
+    logout: (req, res) => {
+        req.session.user = null
+        res.redirect('/login')
+    }
 }

@@ -59,6 +59,7 @@ router.get('/master-kategori', c_master_kategori.index)
 router.get('/master-kategori/tambah', c_master_kategori.form_tambah)
 router.post('/master-kategori/proses-simpan', c_master_kategori.proses_simpan)
 router.get('/laporan', c_laporan.allstok)
+router.get('/logout', c_auth.logout)
 
 app.use('/', router)
 

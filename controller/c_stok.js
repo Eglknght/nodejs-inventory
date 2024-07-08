@@ -3,7 +3,6 @@ const m_stok = require('../model/m_stok')
 
 module.exports = {
     index : async (req, res) => {
-        console.log(req.body)
         let dataview = {
             konten: 'stok/index',
             uri_segment: req.path.split('/'),
@@ -40,7 +39,7 @@ module.exports = {
             let stok_akhir = sisa_terakhir + Number(jumlah_stok)
             if (jumlah_stok < 1) {
                 let isi_info = `Jumlah stok yang keluar minimal 1`
-                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&pesan=${isi_info}`)
             }
             await m_stok.input_stok_masuk(req, stok_akhir)
             let insert = await m_stok.update_stok_keluar(stok_akhir, kode_produk)
@@ -85,11 +84,11 @@ module.exports = {
             let stok_akhir = sisa_terakhir - Number(jumlah_stok)
             if (jumlah_stok > stok_akhir) {
                 let isi_info = `Jumlah stok yang keluar melebihi stok yang tersedia`
-                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&pesan=${isi_info}`)
             }
             if (jumlah_stok < 1) {
                 let isi_info = `Jumlah stok yang keluar minimal 1`
-                return res.redirect(`/stok?note=info&isi_info=${isi_info}`)
+                return res.redirect(`/stok?note=info&pesan=${isi_info}`)
             }
 
             await m_stok.input_stok_keluar(req, stok_akhir)
