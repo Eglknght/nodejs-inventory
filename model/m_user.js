@@ -1,3 +1,4 @@
+const mysql     = require('mysql2')
 const bcrypt = require('bcryptjs')
 const { db } = require('../config/database')
 
@@ -22,7 +23,8 @@ module.exports =
         let data = {
             username : req.body.form_username,
             password : bcrypt.hashSync(req.body.form_password),
-            nama_lengkap : req.body.nama_lengkap
+            nama_lengkap : req.body.nama_lengkap,
+            role : req.body.form_role
         }
         let sql = mysql.format(
             `INSERT INTO user SET ?`,

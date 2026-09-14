@@ -62,6 +62,54 @@ module.exports =
                 }
             })
         })
-    }
+    },
 
+    get_jumlah_produk_per_kategori: function() {
+        let sql = mysql.format(
+            `SELECT master_kategori.nama AS kategori_nama, COUNT(master_produk.id) AS jumlah
+            FROM master_kategori
+            LEFT JOIN master_produk 
+            ON master_produk.id_kategori = master_kategori.id 
+            GROUP BY master_kategori.id, master_kategori.nama;`
+        )
+        return new Promise( (resolve,reject)=>{
+            db.query(sql, function(errorSql, hasil) {
+                if (errorSql) {
+                    reject(errorSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
+
+    get_total_produk: function() {
+        let sql = mysql.format(
+            `SELECT COUNT(*) AS total FROM master_produk;`
+        )
+        return new Promise( (resolve,reject)=>{
+            db.query(sql, function(errorSql, hasil) {
+                if (errorSql) {
+                    reject(errorSql)
+                } else {
+                    resolve(hasil[0].total)
+                }
+            })
+        })
+    },
+
+    get_total_kategori: function() {
+        let sql = mysql.format(
+            `SELECT COUNT(*) AS total FROM master_kategori;`
+        )
+        return new Promise( (resolve,reject)=>{
+            db.query(sql, function(errorSql, hasil) {
+                if (errorSql) {
+                    reject(errorSql)
+                } else {
+                    resolve(hasil[0].total)
+                }
+            })
+        })
+    }
 }

@@ -144,4 +144,18 @@ module.exports =
             })
         })
     },
+    get_produk_stok_menipis : () => {
+        let sql = mysql.format(
+            `SELECT nama, stok FROM master_produk WHERE stok <= 25` 
+        )
+        return new Promise((resolve, reject) => {
+            db.query(sql, function(errSql, hasil){
+                if(errSql){
+                    reject(errSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    }
 }

@@ -1,5 +1,50 @@
-<div
-class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-<h1 class="h2">Dashboard</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard</h1>
 </div>
-<p>isi konten</p>
+
+<div style="max-width: 400px; margin: 30px 0;">
+  <canvas id="stockChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('stockChart');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: <%- JSON.stringify(chartLabels) %>,
+      datasets: [{
+        data: <%- JSON.stringify(chartData) %>,
+        backgroundColor: ['#3B82F6', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+</script>
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card text-center p-3">
+      <h6>Total Produk</h6>
+      <h2><%= total_produk %></h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center p-3">
+      <h6>Total Kategori</h6>
+      <h2><%= total_kategori %></h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center p-3 border-warning">
+      <h6>Stok Menipis</h6>
+      <h2 class="text-warning"><%= total_stok_menipis %></h2>
+    </div>
+  </div>
+</div>
