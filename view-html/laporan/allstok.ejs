@@ -1,24 +1,45 @@
-<div
-class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-<h1 class="h2">Laporan</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Laporan</h1>
 </div>
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-12 d-flex gap-2 align-items-end flex-wrap mb-3">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Pilih Produk
             </button>
             <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="/laporan?tanggal_mulai=<%= req.query.tanggal_mulai || '' %>&tanggal_akhir=<%= req.query.tanggal_akhir || '' %>">Semua
+                        Produk</a></li>
                 <% for (const i in produk) { %>
-                <li><a class="dropdown-item" href="/laporan?kodeproduk=<%= produk[i].kode %>"><%= produk[i].nama %></a></li>
-                <% } %>
+                    <li><a class="dropdown-item"
+                            href="/laporan?kodeproduk=<%= produk[i].kode %>&tanggal_mulai=<%= req.query.tanggal_mulai || '' %>&tanggal_akhir=<%= req.query.tanggal_akhir || '' %>">
+                            <%= produk[i].nama %>
+                        </a></li>
+                    <% } %>
             </ul>
         </div>
+
+        <form method="GET" action="/laporan" class="d-flex gap-2 align-items-end">
+            <input type="hidden" name="kodeproduk" value="<%= req.query.kodeproduk || '' %>">
+            <div>
+                <label class="form-label mb-0">Dari</label>
+                <input type="date" name="tanggal_mulai" class="form-control"
+                    value="<%= req.query.tanggal_mulai || '' %>">
+            </div>
+            <div>
+                <label class="form-label mb-0">Sampai</label>
+                <input type="date" name="tanggal_akhir" class="form-control"
+                    value="<%= req.query.tanggal_akhir || '' %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
     </div>
 </div>
 
-<% if (datalaporan.length > 0) { %>
+<% if (datalaporan.length> 0) { %>
     <table id="table_laporan_stok" class="table">
         <thead>
             <tr>
@@ -35,38 +56,56 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
         </thead>
         <tbody class="table-group-divider">
             <% for (const i in datalaporan) { %>
-                <% let urut = Number(i) + Number(1) %>
-                <tr>
-                    <th scope="row"><%= urut %></th>
-                    <td><%= datalaporan[i].kode_produk %></td>
-                    <td><%= datalaporan[i].nama %></td>
-                    <td><%= datalaporan[i].stok_masuk %></td>
-                    <td><%= datalaporan[i].stok_keluar %></td>
-                    <td><%= datalaporan[i].stok_sisa %></td>
-                    <td><%= datalaporan[i].keterangan %></td>
-                    <td><%= moment(datalaporan[i].dibuat_kapan).format('dddd, DD MMMM YYYY') %></td>
-                    <td><%= moment(datalaporan[i].dibuat_kapan).format('HH:mm') %></td>
-                </tr>
-            <% } %>
+                <% let urut=Number(i) + Number(1) %>
+                    <tr>
+                        <th scope="row">
+                            <%= urut %>
+                        </th>
+                        <td>
+                            <%= datalaporan[i].kode_produk %>
+                        </td>
+                        <td>
+                            <%= datalaporan[i].nama %>
+                        </td>
+                        <td>
+                            <%= datalaporan[i].stok_masuk %>
+                        </td>
+                        <td>
+                            <%= datalaporan[i].stok_keluar %>
+                        </td>
+                        <td>
+                            <%= datalaporan[i].stok_sisa %>
+                        </td>
+                        <td>
+                            <%= datalaporan[i].keterangan %>
+                        </td>
+                        <td>
+                            <%= moment(datalaporan[i].dibuat_kapan).format('dddd, DD MMMM YYYY') %>
+                        </td>
+                        <td>
+                            <%= moment(datalaporan[i].dibuat_kapan).format('HH:mm') %>
+                        </td>
+                    </tr>
+                    <% } %>
         </tbody>
     </table>
-<% } %>
+    <% } %>
 
-<link rel="stylesheet" href="/datatables/css/buttons.dataTables.css">
-<script src="/datatables/js/dataTables.buttons.js"></script>
-<script src="/datatables/js/buttons.dataTables.js"></script>
-<script src="/jszip/jszip.min.js"></script>
-<script src="/pdfmake/pdfmake.min.js"></script>
-<script src="/pdfmake/vfs_fonts.js"></script>
-<script src="/datatables/js/buttons.html5.min.js"></script>
-<script src="/datatables/js/buttons.print.min.js"></script>
+        <link rel="stylesheet" href="/datatables/css/buttons.dataTables.css">
+        <script src="/datatables/js/dataTables.buttons.js"></script>
+        <script src="/datatables/js/buttons.dataTables.js"></script>
+        <script src="/jszip/jszip.min.js"></script>
+        <script src="/pdfmake/pdfmake.min.js"></script>
+        <script src="/pdfmake/vfs_fonts.js"></script>
+        <script src="/datatables/js/buttons.html5.min.js"></script>
+        <script src="/datatables/js/buttons.print.min.js"></script>
 
-<script>
-    new DataTable('#table_laporan_stok', {
-        layout: {
-            topStart: {
-                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-            }
-        }
-    })
-</script>
+        <script>
+            new DataTable('#table_laporan_stok', {
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                }
+            })
+        </script>

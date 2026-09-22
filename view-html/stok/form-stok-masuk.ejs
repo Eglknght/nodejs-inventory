@@ -1,41 +1,57 @@
-<div
-class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-<h1 class="h2">Form Stok Masuk</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Form Stok Masuk</h1>
 </div>
 
 <%if (info_error) { %>
     <strong style="color: red;">
         <%= info_error.errno %> - <%= info_error.code %> <br>
-        <%= info_error.sqlMessage %> <br>
+                <%= info_error.sqlMessage %> <br>
     </strong>
     <br>
-<% } %>
+    <% } %>
 
-<div class="row">
-    <div class="col-md-12 col-lg-6">
-        <form action="/stok-masuk/proses-simpan" method="POST">
-            <div class="mb-3">
-                <label class="form-label">produk</label>
-                <select id="form_produk" name="form_produk" class="form-select" required>
-                    <option value="">--pilih--</option>
-                    <% for (const i in produk) { %>
-                        <option value="<%= produk[i].kode %>"><%= produk[i].nama %></option>
-                    <% } %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Jumlah Masuk</label>
-                <input type="number" class="form-control" id="form_jumlah" name="form_jumlah" required>
-            </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <form action="/stok-masuk/proses-simpan" method="POST">
+                    <div class="mb-3 position-relative">
+                        <label class="form-label">Barang</label>
+                        <div id="kotak_chip" class="form-control d-flex flex-wrap align-items-center gap-1"
+                            style="min-height: 45px;">
+                            <input type="text" id="cari_produk" placeholder="Cari produk..." autocomplete="off"
+                                style="border: none; outline: none; flex: 1; min-width: 150px;">
+                        </div>
+                        <div id="daftar_saran" class="list-group position-absolute" style="width: 100%; z-index: 10;">
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Keterangan</label>
-                <input type="text" class="form-control" id="form_keterangan" name="form_keterangan" required>
-            </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Barang</th>
+                                <th>Kategori</th>
+                                <th>Kuantitas</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="body_tabel_produk">
+                            <!-- baris produk terpilih nanti muncul di sini -->
+                        </tbody>
+                    </table>
 
-            <button type="submit" class="btn btn-secondary mt-3">
-                <i class="fa-solid fa-save me-1"></i> Simpan
-            </button>
-        </form>
-    </div>
-</div>
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan</label>
+                        <input type="text" class="form-control" id="form_keterangan" name="form_keterangan" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary mt-3">
+                        <i class="fa-solid fa-save me-1"></i> Simpan
+                    </button>
+
+                    <script src="/js/autocomplete-produk.js"></script>
+                    <script>
+                        const semua_produk = <%- JSON.stringify(produk) %>;
+                            setupAutocomplete(semua_produk);
+                    </script>
+                </form>
+            </div>
+        </div>
