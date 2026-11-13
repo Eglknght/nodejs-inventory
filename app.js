@@ -43,17 +43,22 @@ console.log('Isi beranda:', fs.existsSync(folderBeranda) ? fs.readdirSync(folder
 app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 
-app.get('/cek-view', (req, res) => {
-    const lihat = (nama) => {
-        const p = path.join(__dirname, nama)
-        return fs.existsSync(p) ? fs.readdirSync(p) : 'TIDAK ADA'
+function daftar(dir, prefix = '') {
+    let hasil = []
+    for (const nama of fs.readdirSync(dir)) {
+        if (nama === 'node_modules') continue
+        const p = path.join(dir, nama)
+        if (fs.statSync(p).isDirectory()) {
+            hasil = hasil.concat(daftar(p, prefix + nama + '/'))
+        } else {
+            hasil.push(prefix + nama)
+        }
     }
-    res.json({
-        versi: 'tes-3',
-        isi_app: fs.readdirSync(__dirname),
-        isi_views: lihat('views'),
-        isi_view_html: lihat('view-html')
-    })
+    return hasil
+}
+
+app.get('/cek-view', (req, res) => {
+    res.json({ versi: 'tes-4', semua_file: daftar(__dirname) })
 })
 app.get('/', c_beranda.index)
 app.get('/login', c_auth.form_login)
