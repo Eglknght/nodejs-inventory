@@ -44,12 +44,15 @@ app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 
 app.get('/cek-view', (req, res) => {
-    const folder = path.join(__dirname, 'views')
-    const folderBeranda = path.join(folder, 'beranda')
+    const lihat = (nama) => {
+        const p = path.join(__dirname, nama)
+        return fs.existsSync(p) ? fs.readdirSync(p) : 'TIDAK ADA'
+    }
     res.json({
-        dirname: __dirname,
-        view_html: fs.existsSync(folder) ? fs.readdirSync(folder) : 'FOLDER TIDAK ADA',
-        beranda: fs.existsSync(folderBeranda) ? fs.readdirSync(folderBeranda) : 'FOLDER TIDAK ADA'
+        versi: 'tes-3',
+        isi_app: fs.readdirSync(__dirname),
+        isi_views: lihat('views'),
+        isi_view_html: lihat('view-html')
     })
 })
 app.get('/', c_beranda.index)
