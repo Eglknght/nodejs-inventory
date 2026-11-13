@@ -1,12 +1,12 @@
 -- Skema PostgreSQL untuk nodejs-inventory
 
-CREATE TABLE IF NOT EXIST master_kategori (
+CREATE TABLE IF NOT EXISTS master_kategori (
   id SERIAL PRIMARY KEY,
   nama VARCHAR(50) NOT NULL,
   deskripsi VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST master_produk (
+CREATE TABLE IF NOT EXISTS master_produk (
   id SERIAL PRIMARY KEY,
   kode VARCHAR(10) NOT NULL,
   nama VARCHAR(50) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXIST master_produk (
   stok INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST history_stok (
+CREATE TABLE IF NOT EXISTS history_stok (
   id SERIAL PRIMARY KEY,
   kode_produk VARCHAR(10) NOT NULL,
   stok_masuk INTEGER NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXIST history_stok (
 );
 
 -- "user" adalah kata khusus di PostgreSQL, jadi tabelnya diganti nama menjadi users
-CREATE TABLE IF NOT EXIST users (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   role VARCHAR(20) NOT NULL DEFAULT 'karyawan',
   username VARCHAR(20) NOT NULL,
@@ -41,20 +41,20 @@ CREATE TABLE IF NOT EXIST users (
   nama_lengkap VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST master_departemen (
+CREATE TABLE IF NOT EXISTS master_departemen (
   id SERIAL PRIMARY KEY,
   kode VARCHAR(5) NOT NULL,
   nama VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST master_jabatan (
+CREATE TABLE IF NOT EXISTS master_jabatan (
   id SERIAL PRIMARY KEY,
   nama VARCHAR(50) NOT NULL,
   role VARCHAR(50) NOT NULL,
   deskripsi VARCHAR(300) NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST karyawan (
+CREATE TABLE IF NOT EXISTS karyawan (
   id SERIAL PRIMARY KEY,
   nama VARCHAR(100) NOT NULL,
   alamat VARCHAR(500) NOT NULL,
