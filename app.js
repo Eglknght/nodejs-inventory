@@ -16,7 +16,7 @@ const c_master_kategori = require('./controller/c_master_kategori')
 const c_stok = require('./controller/c_stok')
 const c_laporan = require('./controller/c_laporan')
 const cek_login = c_auth.cek_login
-const { initDb } = require('./database')
+const { initDb } = require('./config/database')
 
 
 app.use(cookieParser(process.env.SESSION_SECRET || 'secret'))
