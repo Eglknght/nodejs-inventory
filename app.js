@@ -34,17 +34,17 @@ app.use(passport.session())
 
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'view-html'))
+app.set('views', path.join(__dirname, 'views'))
 const fs = require('fs')
-const folderView = path.join(__dirname, 'view-html')
-console.log('Isi view-html:', fs.existsSync(folderView) ? fs.readdirSync(folderView) : 'FOLDER TIDAK ADA')
+const folderView = path.join(__dirname, 'views')
+console.log('Isi views:', fs.existsSync(folderView) ? fs.readdirSync(folderView) : 'FOLDER TIDAK ADA')
 const folderBeranda = path.join(folderView, 'beranda')
 console.log('Isi beranda:', fs.existsSync(folderBeranda) ? fs.readdirSync(folderBeranda) : 'FOLDER TIDAK ADA')
 app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 
 app.get('/cek-view', (req, res) => {
-    const folder = path.join(__dirname, 'view-html')
+    const folder = path.join(__dirname, 'views')
     const folderBeranda = path.join(folder, 'beranda')
     res.json({
         dirname: __dirname,
