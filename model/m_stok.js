@@ -1,4 +1,3 @@
-const mysql = require('mysql2')
 const db = require('../config/database').db
 const moment = require('moment')
 
@@ -7,15 +6,12 @@ moment.locale('id')
 module.exports =
 {
     cek_stok_sisa: (kode_produk) => {
-        let sql = mysql.format(
-            `SELECT * FROM history_stok 
+        let sql = `SELECT * FROM history_stok 
             WHERE kode_produk = ?
             ORDER BY id DESC 
-            LIMIT 1`,
-            [kode_produk]
-        )
+            LIMIT 1`
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errSql, hasil) {
+            db.query(sql, [kode_produk], function (errSql, hasil) {
                 if (errSql) {
                     reject(errSql)
                 } else {
@@ -25,15 +21,12 @@ module.exports =
         })
     },
     cek_current_stok: (kode_produk) => {
-        let sql = mysql.format(
-            `SELECT * FROM master_produk 
+        let sql = `SELECT * FROM master_produk 
             WHERE kode = ?
             ORDER BY id DESC 
-            LIMIT 1`,
-            [kode_produk]
-        )
+            LIMIT 1`
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errSql, hasil) {
+            db.query(sql, [kode_produk], function (errSql, hasil) {
                 if (errSql) {
                     reject(errSql)
                 } else {
@@ -45,12 +38,9 @@ module.exports =
 
     //update main stok
     update_stok_keluar: (stok_akhir, kode_produk) => {
-        let sql = mysql.format(
-            `UPDATE master_produk SET stok = ? WHERE kode = ?`,
-            [stok_akhir, kode_produk]
-        )
+        let sql = `UPDATE master_produk SET stok = ? WHERE kode = ?`
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errSql, hasil) {
+            db.query(sql, [stok_akhir, kode_produk], function (errSql, hasil) {
                 if (errSql) {
                     reject(errSql)
                 } else {
@@ -61,21 +51,17 @@ module.exports =
     },
 
     input_stok_masuk: (req, stok_akhir, kode_produk, jumlah_masuk) => {
-        let data = {
-            kode_produk: kode_produk,
-            stok_masuk: jumlah_masuk,
-            stok_keluar: 0,
-            stok_sisa: stok_akhir,
-            keterangan: req.body.form_keterangan,
-            dibuat_oleh: req.session.user.id,
-            dibuat_kapan: moment().format('YYYY-MM-DD HH:mm:ss')
-        }
-        let sql = mysql.format(
-            `INSERT INTO history_stok SET ?`,
-            [data]
-        )
+        let user_id = req.session.user.id
+        let waktu = moment().format('YYYY-MM-DD HH:mm:ss')
+        let sql = `INSERT INTO history_stok 
+            (kode_produk, stok_masuk, stok_keluar, stok_sisa, keterangan, dibuat_oleh, dibuat_kapan, diperbarui_oleh, diperbarui_kapan)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        let nilai = [
+            kode_produk, jumlah_masuk, 0, stok_akhir,
+            req.body.form_keterangan, user_id, waktu, user_id, waktu
+        ]
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errSql, hasil) {
+            db.query(sql, nilai, function (errSql, hasil) {
                 if (errSql) {
                     reject(errSql)
                 } else {
@@ -85,21 +71,17 @@ module.exports =
         })
     },
     input_stok_keluar: (req, stok_akhir, kode_produk, jumlah_keluar) => {
-        let data = {
-            kode_produk: kode_produk,
-            stok_masuk: 0,
-            stok_keluar: -jumlah_keluar,
-            stok_sisa: stok_akhir,
-            keterangan: req.body.form_keterangan,
-            dibuat_oleh: req.session.user.id,
-            dibuat_kapan: moment().format('YYYY-MM-DD HH:mm:ss')
-        }
-        let sql = mysql.format(
-            `INSERT INTO history_stok SET ?`,
-            [data]
-        )
+        let user_id = req.session.user.id
+        let waktu = moment().format('YYYY-MM-DD HH:mm:ss')
+        let sql = `INSERT INTO history_stok 
+            (kode_produk, stok_masuk, stok_keluar, stok_sisa, keterangan, dibuat_oleh, dibuat_kapan, diperbarui_oleh, diperbarui_kapan)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        let nilai = [
+            kode_produk, 0, -jumlah_keluar, stok_akhir,
+            req.body.form_keterangan, user_id, waktu, user_id, waktu
+        ]
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errSql, hasil) {
+            db.query(sql, nilai, function (errSql, hasil) {
                 if (errSql) {
                     reject(errSql)
                 } else {
@@ -127,18 +109,15 @@ module.exports =
 
         let where_clause = kondisi.length > 0 ? 'WHERE ' + kondisi.join(' AND ') : ''
 
-        let sql = mysql.format(
-            `SELECT s.*, p.nama, p.deskripsi
+        let sql = `SELECT s.*, p.nama, p.deskripsi
         FROM history_stok as s
         LEFT JOIN master_produk as p
         ON p.kode = s.kode_produk
         ${where_clause}
-        ORDER BY s.id DESC`,
-            nilai
-        )
+        ORDER BY s.id DESC`
 
         return new Promise((resolve, reject) => {
-            db.query(sql, function (errorSql, hasil) {
+            db.query(sql, nilai, function (errorSql, hasil) {
                 if (errorSql) {
                     reject(errorSql)
                 } else {
@@ -148,9 +127,7 @@ module.exports =
         })
     },
     get_produk_stok: () => {
-        let sql = mysql.format(
-            `SELECT p.nama, p.stok            
-            FROM master_produk as p`        )
+        let sql = `SELECT p.nama, p.stok FROM master_produk as p`
         return new Promise((resolve, reject) => {
             db.query(sql, function (errSql, hasil) {
                 if (errSql) {
@@ -162,9 +139,7 @@ module.exports =
         })
     },
     get_produk_stok_menipis: () => {
-        let sql = mysql.format(
-            `SELECT nama, stok FROM master_produk WHERE stok <= 25`
-        )
+        let sql = `SELECT nama, stok FROM master_produk WHERE stok <= 25`
         return new Promise((resolve, reject) => {
             db.query(sql, function (errSql, hasil) {
                 if (errSql) {

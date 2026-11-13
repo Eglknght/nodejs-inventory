@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -15,11 +15,12 @@ const c_master_kategori = require('./controller/c_master_kategori')
 const c_stok = require('./controller/c_stok')
 const c_laporan = require('./controller/c_laporan')
 const cek_login = c_auth.cek_login
+const { initDb } = require('./database')
 
 
-app.use(cookieParser('secret'))
+app.use(cookieParser(process.env.SESSION_SECRET || 'secret'))
 app.use(session({
-    secret: 'secret',
+    secret: process.env.SESSION_SECRET || 'secret',
     resave: true,
     saveUninitialized: false,
     cookie: {    
@@ -69,6 +70,13 @@ router.get('/logout', c_auth.logout)
 
 app.use('/', router)
 
-app.listen(port, () => {
-    console.log(`aplikasi sudah siap, buka http://localhost:${port}`)
-})
+initDb()
+    .then(() => {
+        app.listen(port, () => {
+            console.log(`aplikasi sudah siap, buka http://localhost:${port}`)
+        })
+    })
+    .catch((err) => {
+        console.error('Gagal menyiapkan database:', err)
+        process.exit(1)
+    })

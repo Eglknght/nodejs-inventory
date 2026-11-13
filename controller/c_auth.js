@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
-const mysql = require('mysql2')
-const db = require('../config/database').db
+const { initDb } = require('./config/database')
 const akses_menu = {
     admin : ['dashboard', 'user-management', 'master-produk', 'master-kategori', 'stok', 'laporan'],
     karyawan : ['dashboard', 'stok', 'laporan']
@@ -9,7 +8,7 @@ const akses_menu = {
 let cari_username = (username) => {
     return new Promise((resolve, reject) => {
         try {
-            db.query('SELECT * FROM user WHERE username = ?', [username], (errorSql, hasil) => {
+            db.query('SELECT * FROM users WHERE username = ?', [username], (errorSql, hasil) => {
                 if (errorSql) {
                     reject(errorSql)
                 } else {
