@@ -43,6 +43,15 @@ console.log('Isi beranda:', fs.existsSync(folderBeranda) ? fs.readdirSync(folder
 app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 
+app.get('/cek-view', (req, res) => {
+    const folder = path.join(__dirname, 'view-html')
+    const folderBeranda = path.join(folder, 'beranda')
+    res.json({
+        dirname: __dirname,
+        view_html: fs.existsSync(folder) ? fs.readdirSync(folder) : 'FOLDER TIDAK ADA',
+        beranda: fs.existsSync(folderBeranda) ? fs.readdirSync(folderBeranda) : 'FOLDER TIDAK ADA'
+    })
+})
 app.get('/', c_beranda.index)
 app.get('/login', c_auth.form_login)
 app.post('/proses-login', c_auth.proses_login)
