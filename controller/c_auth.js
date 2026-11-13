@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { initDb } = require('./config/database')
+const { initDb } = require('../config/database')
 const akses_menu = {
     admin : ['dashboard', 'user-management', 'master-produk', 'master-kategori', 'stok', 'laporan'],
     karyawan : ['dashboard', 'stok', 'laporan']
