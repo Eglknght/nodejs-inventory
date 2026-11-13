@@ -34,7 +34,7 @@ app.use(passport.session())
 
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', __dirname)
 const fs = require('fs')
 const folderView = path.join(__dirname, 'views')
 console.log('Isi views:', fs.existsSync(folderView) ? fs.readdirSync(folderView) : 'FOLDER TIDAK ADA')
