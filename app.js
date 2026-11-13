@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const path = require('path')
 
 const c_beranda = require('./controller/c_beranda')
 const c_auth = require('./controller/c_auth')
@@ -33,8 +34,8 @@ app.use(passport.session())
 
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-app.set('views', './view-html')
-app.use(express.static('public'))
+app.set('views', path.join(__dirname, 'view-html'))
+app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 
 app.get('/', c_beranda.index)
